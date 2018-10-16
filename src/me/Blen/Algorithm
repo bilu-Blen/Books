@@ -1,0 +1,26 @@
+Input- 
+Book that can have AN author from existing author lists
+Author which can have as many books as they want, title, ISBN
+
+Process
+
+Give the user a choice to do what they want 
+
+Prompt the user to enter a book
+accept book from the user 
+store the book 
+
+Prompt the user to enter an Author
+Accept the Author 
+store the author 
+
+Prompt the user to  add a book to an author
+accept book from the user 
+store the book 
+
+List all authors and books they wrote 
+
+ 
+
+
+  
