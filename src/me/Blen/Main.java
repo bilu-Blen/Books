@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    static Scanner scan = new Scanner(System.in);
+
 
     public static void main(String[] args) {
 	// write your code here
@@ -17,11 +19,15 @@ public class Main {
         //manually adding authors to an array list
         ArrayList<Author> authorList = new ArrayList<Author>();
         Author authorOne = new Author();
+        Books bookOne = new Books();
+        bookOne.setTitle("UnQualified");
 
         authorOne.setFirstName("Steven");
         authorOne.setLastName("Furtrik");
         authorOne.setEmail("stevendfshd@gmail.com");
         authorOne.setPhoneNum(9348938);
+        bookOne.setAuthor(authorOne);
+        authorOne.getBooksWrote().add(bookOne);
         authorList.add(authorOne);
 
         Author authorTwo = new Author();
@@ -31,13 +37,17 @@ public class Main {
         authorTwo.setPhoneNum(11223344);
         authorList.add(authorTwo);
 
+
         int choice = 0;
+        Author author = new Author();
+        ArrayList<Books> booksList = new ArrayList<>();
+
+
         do{
 
         //Accept the users choice to do what they want on the app
         System.out.println("What do you want to do today? \n\tTo add a book enter '1', \n \tTo add an author enter '2', \n \tTo add a book to an author, enter '3'. \n \tTo view the lists of Authors the books they wrote, '4', " +
                 "\n\t to quit the program enter '5'");
-        Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
         scan.nextLine();
 
@@ -56,17 +66,29 @@ public class Main {
                 scan.nextLine();
                 book.setISBN(bookISBN);
 
-                //accepting book's Author
-                System.out.println("Enter the first name of the author of the book");
-                String bookAuthorFName = scan.nextLine();
-                System.out.println("Enter the last name of the author");
-                String bookAuthorLName = scan.nextLine();
+                String bookAuthorFName;
+                String bookAuthorLName;
 
-                Author author = new Author();
+                //accepting book's Author if they know the author of the book
+                System.out.println("Do you know the author of the book? Y/N");
+                String userYN = scan.nextLine();
+                if(userYN.equalsIgnoreCase("Y")){
+                    for(Author authorEach : authorList){
+                        System.out.println(authorEach.getFullNameAuthor());
+                    }
+                    System.out.println("Enter the author you want to choose?");
+                    String authorChoice = scan.nextLine();
+                    for(Author authorChoiceSec : authorList){
+                        if(authorChoiceSec.getFullNameAuthor().equalsIgnoreCase(authorChoice)){
+                            authorChoiceSec.getBooksWrote().add(book);
+                            System.out.println("Your book " + book.getTitle() + "has been added to the list of books " + authorChoiceSec.getFullNameAuthor() + " wrote");
+                        }
+                    }
 
-                author.setFirstName(bookAuthorFName);
-                author.setLastName(bookAuthorLName);
-                book.setAuthor(author);
+                }else{
+                    booksList.add(book);
+                    System.out.println("Your books has been successfully added");
+                }
                 break;
 
             case 2:
@@ -92,6 +114,21 @@ public class Main {
                 System.out.println("Enter the phone number of the author");
                 int authorPNum = scan.nextInt();
                 scan.nextLine();
+
+                //
+                System.out.println("Do you want to add book? Y/N");
+                String addBook = scan.nextLine();
+
+                do{
+                    Books newBook = addBoook();
+                    authorNew.getBooksWrote().add(newBook);
+                    System.out.println("Do you want to add another  book? Y/N");
+                    addBook = scan.nextLine();
+
+                }while(addBook.equalsIgnoreCase("y"));
+
+                authorList.add(authorNew);
+
                 break;
 
             case 3:
@@ -100,27 +137,28 @@ public class Main {
                 //entering the author the would like to add a user for
                 String userAuthorChoice = scan.nextLine();
 
-                author = new Author();
 
 
                 for (Author eachAuthor : authorList){
                     if(eachAuthor.getFirstName().equalsIgnoreCase(userAuthorChoice)){
-                        book = new Books();
+                        Books bookTwo = new Books();
 
                         //accepting book title
                         System.out.println( "Enter the title of the book");
                         bookTitle = scan.nextLine();
-                        book.setTitle(bookTitle);
+                        bookTwo.setTitle(bookTitle);
 
                         //accepting book ISBN
                         System.out.println("Enter the ISBN number");
                         bookISBN = scan.nextInt();
                         scan.nextLine();
-                        book.setISBN(bookISBN);
+                        bookTwo.setISBN(bookISBN);
 
-                        author.getBooksWrote().add(book);
+                        eachAuthor.getBooksWrote().add(bookTwo);
 //                        book.setAuthor(eachAuthor);
-
+                        break;
+                    }else{
+                        System.out.println("The author you entered doesn't exist");
                     }
                 }
                 break;
@@ -130,13 +168,31 @@ public class Main {
                 System.out.println("Welcome, to view the list of Authors with the books they wrote");
 
                 for(Author eachAuthor : authorList){
-                    System.out.println(eachAuthor.getFullNameAuthor() + " \t" + eachAuthor.getPhoneNum() + " \t" +  eachAuthor.getEmail()  );
-                    for(Books eachBook : booksWrote){
-                        System.out.println(eachBook);
+                    System.out.println("Name of the author " + eachAuthor.getFullNameAuthor() + " \t" + eachAuthor.getPhoneNum() + " \t" +  eachAuthor.getEmail()  );
+                    for(Books eachBook : eachAuthor.getBooksWrote()){
+                        System.out.println("The titles of books written by this author are " + "\t" + eachBook.getTitle());
                     }
                 }
                 break;
         }
         }while(choice != 5);
     }
+
+    public static Books addBoook(){
+        //add the books written by  the author
+        System.out.println("Enter the books written by this Author");
+        Books newBook = new Books();
+
+        System.out.println("Enter the title of the book");
+        String newBookTitle = scan.nextLine();
+        newBook.setTitle(newBookTitle);
+
+        System.out.println("Enter the ISBN of the book");
+        int newBookISBN = scan.nextInt();
+        scan.nextLine();
+        newBook.setISBN(newBookISBN);
+        return newBook;
+    }
+
+
 }

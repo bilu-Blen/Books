@@ -7,6 +7,12 @@ public class Author {
     private String lastName;
     private String email;
     private int phoneNum;
+    private ArrayList<Books> booksWrote;
+
+    public Author() {
+        booksWrote = new ArrayList<>();
+    }
+
 
     public ArrayList<Books> getBooksWrote() {
         return booksWrote;
@@ -15,9 +21,6 @@ public class Author {
     public void setBooksWrote(ArrayList<Books> booksWrote) {
         this.booksWrote = booksWrote;
     }
-
-    ArrayList<Books> booksWrote = new ArrayList<>();
-
 
     public String getFirstName() {
         return firstName;
